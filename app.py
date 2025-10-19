@@ -25,7 +25,10 @@ def heatmap():
 def save_click():
     data = request.get_json()
     x, y = data["x"], data["y"]
+    print("Before ")
     conn = sqlite3.connect("clicks.db")
+    print("After here")
+    print(conn)
     c = conn.cursor()
     c.execute("INSERT INTO clicks (x, y) VALUES (?, ?)", (x, y))
     conn.commit()
