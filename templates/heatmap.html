@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heatmap View</title>
+  <script src="{{ url_for('static', filename='heatmap.min.js') }}"></script>
+</head>
+<body style="margin:0;">
+  <div id="heatmapContainer" style="width:100vw; height:100vh;"></div>
+
+  <script>
+    const heatmapInstance = h337.create({
+      container: document.getElementById("heatmapContainer"),
+      radius: 40
+    });
+
+    fetch("/api/clicks")
+      .then(res => res.json())
+      .then(data => {
+        heatmapInstance.setData({
+          max: 10,
+          data: data.map(p => ({x: p.x, y: p.y, value: 1}))
+        });
+      });
+  </script>
+</body>
+</html>
