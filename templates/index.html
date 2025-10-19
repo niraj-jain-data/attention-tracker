@@ -1,11 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Attention Tracker</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Attention Tracker Demo</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body style="height:100vh; margin:0; background:#f8f8f8;">
-  <h3 style="text-align:center;">Tap anywhere!</h3>
+<body>
+  <header>
+    <h2>🧠 Focus Tracker</h2>
+    <p>Tap images — we’ll visualize attention!</p>
+  </header>
+
+  <main id="gallery"></main>
+
+  <footer>
+    <a href="/heatmap">View Heatmap 🔥</a>
+  </footer>
+
+  <script>
+    // random images from Unsplash
+    const imageSources = [
+      "https://source.unsplash.com/random/400x400?sig=1",
+      "https://source.unsplash.com/random/400x400?sig=2",
+      "https://source.unsplash.com/random/400x400?sig=3",
+      "https://source.unsplash.com/random/400x400?sig=4",
+      "https://source.unsplash.com/random/400x400?sig=5"
+    ];
+
+    const gallery = document.getElementById("gallery");
+    imageSources.forEach(src => {
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = "random";
+      img.className = "gallery-image";
+      gallery.appendChild(img);
+    });
+  </script>
 
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
