@@ -34,6 +34,7 @@ def save_click():
 
 @app.route("/api/clicks")
 def get_clicks():
+    print("Checking")
     conn = sqlite3.connect("clicks.db")
     c = conn.cursor()
     c.execute("SELECT x, y FROM clicks")
