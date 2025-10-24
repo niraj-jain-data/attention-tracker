@@ -63,7 +63,7 @@
 </style>
 </head>
 <body>
-
+<h1>Hello world</h1>
 <script>
   const items = [
     {name: 'Cup', image: 'https://images.unsplash.com/photo-1549924231-f129b911e442?ixlib=rb-4.0.1&auto=format&fit=crop&w=800&q=80'},
@@ -71,38 +71,6 @@
     // Add more items here...
   ];
 
-  // Add more items to reach 10
-  // For demonstration, using placeholders
-  for (let i = 3; i <= 10; i++) {
-    items.push({
-      name: 'Item ' + i,
-      image: 'https://via.placeholder.com/150?text=Item+' + i
-    });
-  }
-
-  const container = document.createElement('div');
-
-  items.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'card';
-
-    card.innerHTML = `
-      <div class="flip-card-inner">
-        <div class="flip-card-front">
-          <img src="${item.image}" alt="${item.name}"/>
-        </div>
-        <div class="flip-card-back">
-          ${item.name}
-        </div>
-      </div>
-    `;
-
-    card.addEventListener('click', () => {
-      card.classList.toggle('flipped');
-    });
-
-    document.body.appendChild(card);
-  });
 </script>
 
 </body>
