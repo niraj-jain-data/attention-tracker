@@ -1,93 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Attention Heatmap</title>
-  <script src="https://unpkg.com/heatmap.js@2.0.2/build/heatmap.min.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      overflow: hidden;
-      background: #f0f0f0;
-    }
-    #image-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
-    img {
-      width: 90%;
-      border-radius: 8px;
-      margin-top: 10px;
-      cursor: pointer;
-    }
-    #heatmapContainer {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
-    #nextBtn {
-      padding: 10px 20px;
-      margin-top: 15px;
-      font-size: 18px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Daily Used Items</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f0f0f0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+  }
+  .card {
+    width: 150px;
+    height: 150px;
+    margin: 10px;
+    perspective: 1000px;
+    cursor: pointer;
+  }
+  .flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+  }
+  .flip-card:hover .flip-card-inner,
+  .flip-card.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+  .flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 10px;
+  }
+  .flip-card-front {
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .flip-card-back {
+    background-color: #333;
+    color: white;
+    transform: rotateY(180deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    padding: 10px;
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+  }
+</style>
 </head>
 <body>
-  <div id="image-container"></div>
-  <div id="heatmapContainer"></div>
-  <script>
-    const images = [
-      'https://picsum.photos/800/600?1',
-      'https://picsum.photos/800/600?2',
-      'https://picsum.photos/800/600?3',
-      'https://picsum.photos/800/600?4',
-      'https://picsum.photos/800/600?5',
-      'https://picsum.photos/800/600?6',
-      'https://picsum.photos/800/600?7',
-      'https://picsum.photos/800/600?8',
-      'https://picsum.photos/800/600?9',
-      'https://picsum.photos/800/600?10'
-    ];
 
-    const shuffled = images.sort(() => 0.5 - Math.random());
-    let current = 0;
-    const heatmapInstance = h337.create({container: document.getElementById('heatmapContainer')});
+<script>
+  const items = [
+    {name: 'Cup', image: 'https://images.unsplash.com/photo-1549924231-f129b911e442?ixlib=rb-4.0.1&auto=format&fit=crop&w=800&q=80'},
+    {name: 'Spoon', image: 'https://images.unsplash.com/photo-1611590685727-88b73c936a6f?ixlib=rb-4.0.1&auto=format&fit=crop&w=800&q=80'},
+    // Add more items here...
+  ];
 
-    function loadImage() {
-      const container = document.getElementById('image-container');
-      container.innerHTML = '';
-      if (current >= shuffled.length) {
-        container.innerHTML = '<h2>All images viewed!</h2>';
-        return;
-      }
+  // Add more items to reach 10
+  // For demonstration, using placeholders
+  for (let i = 3; i <= 10; i++) {
+    items.push({
+      name: 'Item ' + i,
+      image: 'https://via.placeholder.com/150?text=Item+' + i
+    });
+  }
 
-      const img = document.createElement('img');
-      img.src = shuffled[current];
-      container.appendChild(img);
+  const container = document.createElement('div');
 
-      const nextBtn = document.createElement('button');
-      nextBtn.id = 'nextBtn';
-      nextBtn.innerText = 'Next Image';
-      nextBtn.onclick = () => { current++; loadImage(); };
-      container.appendChild(nextBtn);
+  items.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'card';
 
-      img.addEventListener('click', e => {
-        const rect = e.target.getBoundingClientRect();
-        const x = e.clientX;
-        const y = e.clientY;
-        heatmapInstance.addData({ x, y, value: 1 });
-      });
-    }
+    card.innerHTML = `
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <img src="${item.image}" alt="${item.name}"/>
+        </div>
+        <div class="flip-card-back">
+          ${item.name}
+        </div>
+      </div>
+    `;
 
-    loadImage();
-  </script>
+    card.addEventListener('click', () => {
+      card.classList.toggle('flipped');
+    });
+
+    document.body.appendChild(card);
+  });
+</script>
+
 </body>
 </html>
