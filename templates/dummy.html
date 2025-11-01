@@ -1,125 +1,205 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Suhardham — News Blog (Windsurf)</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    :root{--muted:#64748b;--accent1:#ff6b6b;--accent2:#ff9a9e}
-    html,body{height:100%}
-    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,-apple-system,"Helvetica Neue",Arial;background:#fff;color:#0f172a}
-    .wrap{max-width:980px;margin:0 auto;padding:14px}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Suhardham Youth Meetup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root {
+  --muted:#64748b;
+  --accent1:#1e40af; /* analytical blue */
+  --accent2:#3b82f6; /* lighter blue */
+}
+html,body{height:100%}
+body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,-apple-system,"Helvetica Neue",Arial;background:#fff;color:#0f172a}
+.wrap{max-width:1200px;margin:0 auto;padding:14px}
 
-    .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
-    .brand{display:flex;gap:12px;align-items:center}
-    .brand .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(90deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
-    nav a{margin-left:12px;color:var(--muted);font-size:14px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.brand{display:flex;gap:12px;align-items:center}
+.brand .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(90deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+nav a{margin-left:12px;color:var(--muted);font-size:14px}
 
-    .grid-outer{display:grid;grid-template-columns:1fr 320px;gap:18px}
-    @media (max-width:980px){.grid-outer{grid-template-columns:1fr 300px}}
-    @media (max-width:900px){.grid-outer{grid-template-columns:1fr}}
+.grid-outer{display:grid;grid-template-columns:3fr ;gap:18px}
+@media (max-width:980px){.grid-outer{grid-template-columns:1fr}}
+.hero{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:12px}
 
-    .hero{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:12px}
-    .feature{border-radius:12px;overflow:hidden;box-shadow:0 12px 30px rgba(255,107,107,0.06)}
-    .feature img{width:100%;height:260px;object-fit:cover;display:block;filter:contrast(1.05) saturate(1.05)}
-    @media (max-width:640px){.feature img{height:200px}}
+.article-list{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+@media(max-width:900px){.article-list{grid-template-columns:1fr}}
 
-    .article{display:flex;gap:12px;padding:16px 0;border-bottom:1px solid #eef2f7}
-    .article:last-child{border-bottom:none}
-    .thumb{flex:0 0 220px;border-radius:10px;overflow:hidden}
-    .thumb img{width:220px;height:140px;object-fit:cover;display:block;border-radius:8px;transition:transform .35s ease}
-    .thumb a{display:block}
-    .thumb img:hover{transform:scale(1.03)}
-    @media (max-width:640px){.thumb{flex:0 0 120px}.thumb img{width:120px;height:80px}}
+.article{border-radius:12px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,0.05);background:#fff;display:flex;flex-direction:column}
+.article img{width:100%;height:200px;object-fit:cover;display:block}
+.meta{padding:12px}
+.kicker{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.title{font-size:18px;font-weight:700;margin:6px 0;color:#0b1220}
+.excerpt{color:#253044;margin:6px 0;font-size:14px}
+.read a{color:var(--accent2);font-weight:700;font-size:14px;text-decoration:none}
 
-    .meta{flex:1}
-    .kicker{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
-    .title{font-size:18px;font-weight:800;margin:6px 0;color:#0b1220}
-    .excerpt{color:#253044;margin:6px 0;font-size:14px}
-    .read{display:flex;gap:12px;align-items:center;margin-top:8px}
-    .read a{color:var(--accent2);font-weight:700}
 
-    .ad{display:flex;align-items:center;justify-content:center;border-radius:8px;border:1px dashed #e6eef3;padding:10px;background:#fff;margin:14px 0}
-    .ad img{max-width:100%;height:auto;border-radius:6px}
-
-    .sidebar{position:relative}
-    .sticky{position:sticky;top:14px}
-    .card{border-radius:8px;padding:12px;background:#fff;border:1px solid #eef2f7;margin-bottom:12px}
-    .small-thumb{width:100%;height:120px;object-fit:cover;border-radius:8px}
-
-    .muted{color:var(--muted)}
-    .btn{padding:8px 10px;border-radius:8px;border:1px solid #e6eef3;background:#fff}
-    .btn-primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff;border:none}
-  </style>
+.sticky{position:sticky;top:14px}
+.card{border-radius:8px;padding:12px;background:#fff;border:1px solid #eef2f7;margin-bottom:12px}
+.small-thumb{width:100%;height:120px;object-fit:cover;border-radius:8px}
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="top">
-      <div class="brand">
-        <div class="logo">SD</div>
-        <div>
-          <div style="font-weight:700">Suhardham News</div>
-          <div class="muted small">Community • Windsurf</div>
-        </div>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">
+      <div class="logo">SD</div>
+      <div>
+        <div style="font-weight:700">Suhardham Youth News</div>
       </div>
-      <nav>
-        <a href="#">Home</a>
-        <a href="#">Latest</a>
-        <a href="#">Gallery</a>
-        <a href="#">Events</a>
-      </nav>
-    </div>
-
-    <div class="grid-outer">
-      <main>
-        <div class="hero">
-          <article class="feature" data-id="1">
-            <a href="https://example.com/post/1?ref=hero">
-              <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=1200&auto=format&fit=crop" alt="Starbucks feature">
-            </a>
-            <div style="padding:12px;"> 
-              <a href="https://example.com/post/1"><h2 class="title">Starbucks: Community Cups — Photo Essay</h2></a>
-              <p class="excerpt">Cozy scenes and conversations from our local meetups — a visual journey through coffee and community.</p>
-              <div class="read">
-                <a href="https://example.com/post/1">Read full story</a>
-                <a href="https://example.com/post/1#gallery">View gallery</a>
-              </div>
-            </div>
-          </article>
-        </div>
-
-        <section id="list">
-          <!-- Remaining articles omitted for brevity -->
-        </section>
-      </main>
-
-      <aside class="sidebar">
-        <div class="sticky">
-          <div class="card">
-            <h4 style="margin:0 0 8px 0">Featured Photo</h4>
-            <a href="https://example.com/post/5"><img class="small-thumb" src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=900&auto=format&fit=crop" alt="featured"></a>
-            <p class="muted" style="margin-top:8px">Spotlight on creators and visuals that inspire.</p>
-          </div>
-
-          <div class="card">
-            <h4 style="margin:0 0 8px 0">Popular</h4>
-            <ul style="padding-left:14px;margin:0">
-              <li><a href="https://example.com/guide/windsurf-tips">Top 10 windsurf tips</a></li>
-              <li><a href="https://example.com/guide/rig-sail">How to rig your sail</a></li>
-              <li><a href="https://example.com/guide/safety">Safety checklist</a></li>
-            </ul>
-          </div>
-
-          <div class="card ad">
-            <div style="text-align:center">
-              <div class="muted small" style="font-size:12px;margin-bottom:8px">Sponsored</div>
-              <a href="https://example.com/sponsor" target="_blank"><img src="https://via.placeholder.com/300x200?text=Sidebar+Ad" alt="sidebar ad"></a>
-            </div>
-          </div>
-        </div>
-      </aside>
     </div>
   </div>
+
+  <div class="grid-outer">
+    <!-- main content -->
+    <main>
+
+      <section class="article-list">
+        <!-- Example blog post -->
+         <article class="article">
+  <img src="https://images.squarespace-cdn.com/content/v1/59e512ddf43b55c29c71b996/1508700860697-7ZDBRLI4XTYGUX921DVX/thief.jpg" alt="Thief Incident">
+  <div class="meta">
+    <div class="kicker">Crime</div>
+    <div class="title">Thief Caught in Downtown London Robbery</div>
+    <div class="excerpt">Police apprehended a suspect following a robbery in central London. Authorities are investigating the incident and reviewing CCTV footage. Citizens are advised to stay alert.</div>
+<div class="read">
+      <a href="#">Read more</a> | 
+      <a href="#">Comments</a> | 
+      <a href="#">Share</a> | 
+      <a href="#">Open</a>
+    </div>
+  </div>
+</article>
+<article class="article">
+  <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=900&auto=format&fit=crop" alt="Marriage and Dating">
+  <div class="meta">
+    <div class="kicker">Lifestyle</div>
+    <div class="title">Tips for Successful Marriage and Dating</div>
+    <div class="excerpt">Discover expert advice on building strong relationships, finding the right partner, and keeping your marriage or dating life happy and fulfilling.</div>
+  <div class="read">
+      <a href="#">Read more</a> | 
+      <a href="#">Comments</a> | 
+      <a href="#">Share</a> | 
+      <a href="#">Open</a>
+    </div>
+  </div>
+</article>
+
+<article class="article">
+  <img src="https://life.london/wp-content/uploads/2024/04/shutterstock_1957260502-scaled.webp" alt="VISA Sponsorship Job">
+  <div class="meta">
+    <div class="kicker">Career</div>
+    <div class="title">Get VISA Sponsorship Job in Just 10 Days!</div>
+    <div class="excerpt">Explore job opportunities that claim to provide VISA sponsorship quickly. Learn tips, requirements, and how to apply to increase your chances of landing a job abroad.</div>
+  <div class="read">
+      <a href="#">Read more</a> | 
+      <a href="#">Comments</a> | 
+      <a href="#">Share</a> | 
+      <a href="#">Open</a>
+    </div>
+  </div>
+</article>
+
+
+        <article class="article">
+          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=900&auto=format&fit=crop" alt="Women Leadership">
+          <div class="meta">
+            <div class="kicker">Women</div>
+            <div class="title">Empowering Women in Tech</div>
+            <div class="excerpt">Top strategies and success stories of women breaking barriers in technology.</div>
+      <div class="read">
+      <a href="#">Read more</a> | 
+      <a href="#">Comments</a> | 
+      <a href="#">Share</a> | 
+      <a href="#">Open</a>
+    </div>
+          </div>
+        </article>
+
+        <article class="article">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1ViL1RtafMCWFEXfais6SouIBgSDTWeW4Yg&s" alt="Car Deal">
+          <div class="meta">
+            <div class="kicker">Auto</div>
+            <div class="title">Luxury Car: Weekend Test Drive</div>
+            <div class="excerpt">Experience the thrill of high-performance vehicles with our detailed review.</div>
+         <div class="read">
+      <a href="#">Read more</a> | 
+      <a href="#">Comments</a> | 
+      <a href="#">Share</a> | 
+      <a href="#">Open</a>
+    </div>
+          </div>
+        </article>
+
+        <article class="article">
+          <img src="https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=900&auto=format&fit=crop" alt="New House">
+          <div class="meta">
+            <div class="kicker">Lifestyle</div>
+            <div class="title">Modern Homes: Interior Ideas</div>
+            <div class="excerpt">Design your dream home with these practical interior and decor ideas.</div>
+    <div class="read">
+      <a href="#">Read more</a> | 
+      <a href="#">Comments</a> | 
+      <a href="#">Share</a> | 
+      <a href="#">Open</a>
+    </div>
+          </div>
+        </article>
+<article class="article">
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrs30Ie8ffc9nezAOOYeMQxBjFoUEgD0_pdg&s  " alt="Job Opportunity">
+  <div class="meta">
+    <div class="kicker">Career</div>
+    <div class="title">Top Tech Jobs Hiring Now</div>
+    <div class="excerpt">Explore high-paying tech roles with remote options, flexible schedules, and growth opportunities. Don’t miss your chance to join leading companies today!</div>
+    
+    <div class="read">
+      <a href="#">Read more</a> | 
+      <a href="#">Comments</a> | 
+      <a href="#">Share</a> | 
+      <a href="#">Open</a>
+    </div>
+  </div>
+</article>
+<article class="article">
+  <img src="https://metro.co.uk/wp-content/uploads/2022/12/SEI_120630067-4e9b.jpg?quality=90&strip=all&w=646" alt="London Metro Accident">
+  <div class="meta">
+    <div class="kicker">Breaking News</div>
+    <div class="title">Accident Disrupts London Metro Services</div>
+    <div class="excerpt">A collision in the London Underground has caused major delays this morning. Authorities are investigating, and commuters are advised to seek alternative routes.</div>
+    <div class="read">
+      <a href="#">Read more</a> | 
+      <a href="#">Comments</a> | 
+      <a href="#">Share</a> | 
+      <a href="#">Open</a>
+    </div>
+  </div>
+</article>
+
+<article class="article">
+  <img src="https://i.ndtvimg.com/i/2016-06/uk-pound_650x400_41466736179.jpg?downsize=545:307" alt="Lottery Winning">
+  <div class="meta">
+    <div class="kicker">Finance</div>
+    <div class="title">Double Your Money: Lottery Chances Explained</div>
+    <div class="excerpt">Learn tips and strategies people claim can increase your lottery chances. Understand the risks and realities of attempting to double your money through games of chance.</div>
+    <div class="read"><a href="#">Read more</a></div>
+<div class="read">
+      <a href="#">Read more</a> | 
+      <a href="#">Comments</a> | 
+      <a href="#">Share</a> | 
+      <a href="#">Open</a>
+    </div>
+  </div>
+</article>
+
+
+        <!-- repeat 17+ more posts similarly -->
+      </section>
+    </main>
+
+ 
+  </div>
+</div>
 </body>
 </html>
