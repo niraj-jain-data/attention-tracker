@@ -21,6 +21,10 @@ def index():
 def heatmap():
     return render_template("heatmap.html")
 
+@app.route("/read")
+def read():
+    return render_template("read.html")
+
 @app.route("/api/click", methods=["POST"])
 def save_click():
     data = request.get_json()
