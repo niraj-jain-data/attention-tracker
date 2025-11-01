@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Suhardham — News Blog (Windsurf)</title>
+  <title>Suhardham Youth Meetup</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root{--muted:#64748b;--accent1:#ff6b6b;--accent2:#ff9a9e}
@@ -52,6 +52,7 @@
     .btn{padding:8px 10px;border-radius:8px;border:1px solid #e6eef3;background:#fff}
     .btn-primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff;border:none}
 
+    .click-count{font-size:12px;color:#9ca3af;margin-left:6px}
     a.trackable{position:relative}
   </style>
 </head>
@@ -61,20 +62,16 @@
       <div class="brand">
         <div class="logo">SD</div>
         <div>
-          <div style="font-weight:700">Suhardham News</div>
-          <div class="muted small">Community • Windsurf</div>
+          <div style="font-weight:700">Suhardham Youth News</div>
+          <div class="muted small"></div>
         </div>
       </div>
-      <nav>
-        <a href="#">Home</a>
-        <a href="#">Latest</a>
-        <a href="#">Gallery</a>
-        <a href="#">Events</a>
-      </nav>
+     
     </div>
 
     <div class="grid-outer">
       <main>
+        <!-- hero feature -->
         <div class="hero">
           <article class="feature" data-id="1">
             <a href="https://example.com/post/1?ref=hero" class="trackable" data-id="post-1" data-title="Starbucks: Community Cups">
@@ -86,16 +83,165 @@
               <div class="read">
                 <a href="https://example.com/post/1" class="trackable" data-id="post-1-read">Read full story</a>
                 <a href="https://example.com/post/1#gallery" class="trackable" data-id="post-1-gallery">View gallery</a>
+                <span class="click-count" id="count-post-1"></span>
               </div>
             </div>
           </article>
         </div>
 
+        <!-- list of articles (images are inline thumbnails) -->
         <section id="list">
-          <!-- Remaining articles omitted for brevity, all click-count spans removed -->
+
+          <!-- 2 Instagram -->
+          <article class="article" data-id="2">
+            <div class="thumb"><a href="https://example.com/post/2" class="trackable" data-id="post-2-img"><img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=900&auto=format&fit=crop" alt="Instagram"></a></div>
+            <div class="meta">
+              <div class="kicker">Social</div>
+              <a href="https://example.com/post/2" class="trackable" data-id="post-2-title"><div class="title">Instagram Trends: What’s Working</div></a>
+              <div class="excerpt">Quick analysis of rising content formats and creator strategies to grow engagement on social platforms.</div>
+              <div class="read">
+                <a href="https://example.com/post/2?utm=nav" class="trackable" data-id="post-2-read">Read more</a>
+                <a href="https://example.com/post/2#tips" class="trackable" data-id="post-2-tips">Creator tips</a>
+                <span class="click-count" id="count-post-2"></span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 3 Car -->
+          <article class="article" data-id="3">
+            <div class="thumb"><a href="https://example.com/post/3" class="trackable" data-id="post-3-img"><img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=900&auto=format&fit=crop" alt="Car"></a></div>
+            <div class="meta">
+              <div class="kicker">Auto</div>
+              <a href="https://example.com/post/3" class="trackable" data-id="post-3-title"><div class="title">Car: Weekend Test Drive</div></a>
+              <div class="excerpt">A focused review on performance and practical impressions from the weekend test drive.</div>
+              <div class="read">
+                <a href="https://example.com/post/3" class="trackable" data-id="post-3-read">Read more</a>
+                <a href="https://example.com/post/3#specs" class="trackable" data-id="post-3-specs">Specs</a>
+                <span class="click-count" id="count-post-3"></span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Banner Ad -->
+          <div class="ad">
+            <a href="https://example.com/ad1" class="trackable" data-id="ad-1" target="_blank" rel="noopener"><img src="https://via.placeholder.com/728x90?text=Top+Banner+Ad" alt="ad"></a>
+          </div>
+
+          <!-- 4 YouTube Shorts -->
+          <article class="article" data-id="4">
+            <div class="thumb"><a href="https://example.com/post/4" class="trackable" data-id="post-4-img"><img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?q=80&w=900&auto=format&fit=crop" alt="YouTube Shorts"></a></div>
+            <div class="meta">
+              <div class="kicker">Video</div>
+              <a href="https://example.com/post/4" class="trackable" data-id="post-4-title"><div class="title">YouTube Shorts: Quick Cuts That Work</div></a>
+              <div class="excerpt">How creators repurpose long-form content into vertical shorts to boost reach and discoverability.</div>
+              <div class="read">
+                <a href="https://example.com/post/4" class="trackable" data-id="post-4-read">Read more</a>
+                <a href="https://example.com/post/4#examples" class="trackable" data-id="post-4-examples">Examples</a>
+                <span class="click-count" id="count-post-4"></span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 5 Influencer portrait (tasteful) -->
+          <article class="article" data-id="5">
+            <div class="thumb"><a href="https://example.com/post/5" class="trackable" data-id="post-5-img"><img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=900&auto=format&fit=crop" alt="Creator"></a></div>
+            <div class="meta">
+              <div class="kicker">Feature</div>
+              <a href="https://example.com/post/5" class="trackable" data-id="post-5-title"><div class="title">Creator Spotlight: Rising Stars</div></a>
+              <div class="excerpt">Profiles of creators making waves with authentic storytelling and compelling visuals.</div>
+              <div class="read">
+                <a href="https://example.com/post/5" class="trackable" data-id="post-5-read">Read more</a>
+                <a href="https://example.com/post/5#story" class="trackable" data-id="post-5-story">Their story</a>
+                <span class="click-count" id="count-post-5"></span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Square Ads -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
+            <div class="ad"><a href="https://example.com/ad2" class="trackable" data-id="ad-2" target="_blank"><img src="https://via.placeholder.com/300x300?text=Ad+Square+1" alt="ad"></a></div>
+            <div class="ad"><a href="https://example.com/ad3" class="trackable" data-id="ad-3" target="_blank"><img src="https://via.placeholder.com/300x300?text=Ad+Square+2" alt="ad"></a></div>
+          </div>
+
+          <!-- 6 iPhone 16 Pro -->
+          <article class="article" data-id="6">
+            <div class="thumb"><a href="https://example.com/post/6" class="trackable" data-id="post-6-img"><img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=900&auto=format&fit=crop" alt="iPhone"></a></div>
+            <div class="meta">
+              <div class="kicker">Tech</div>
+              <a href="https://example.com/post/6" class="trackable" data-id="post-6-title"><div class="title">iPhone 16 Pro: First Look</div></a>
+              <div class="excerpt">Hands-on with the latest flagship — what's new and what you'll actually notice in daily use.</div>
+              <div class="read">
+                <a href="https://example.com/post/6" class="trackable" data-id="post-6-read">Read more</a>
+                <a href="https://example.com/post/6#review" class="trackable" data-id="post-6-review">Review</a>
+                <span class="click-count" id="count-post-6"></span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 7 House -->
+          <article class="article" data-id="7">
+            <div class="thumb"><a href="https://example.com/post/7" class="trackable" data-id="post-7-img"><img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=900&auto=format&fit=crop" alt="House"></a></div>
+            <div class="meta">
+              <div class="kicker">Lifestyle</div>
+              <a href="https://example.com/post/7" class="trackable" data-id="post-7-title"><div class="title">House: Cozy Corners</div></a>
+              <div class="excerpt">Design ideas for small homes and community spaces used for meetups.</div>
+              <div class="read">
+                <a href="https://example.com/post/7" class="trackable" data-id="post-7-read">Read more</a>
+                <a href="https://example.com/post/7#ideas" class="trackable" data-id="post-7-ideas">Design ideas</a>
+                <span class="click-count" id="count-post-7"></span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 8 COS fashion -->
+          <article class="article" data-id="8">
+            <div class="thumb"><a href="https://example.com/post/8" class="trackable" data-id="post-8-img"><img src="https://images.unsplash.com/photo-1520974735194-8f2b8a0b1f4b?q=80&w=900&auto=format&fit=crop" alt="COS"></a></div>
+            <div class="meta">
+              <div class="kicker">Style</div>
+              <a href="https://example.com/post/8" class="trackable" data-id="post-8-title"><div class="title">COS: Minimal Looks for Events</div></a>
+              <div class="excerpt">How minimal fashion staples can become practical event uniforms for community gatherings.</div>
+              <div class="read">
+                <a href="https://example.com/post/8" class="trackable" data-id="post-8-read">Read more</a>
+                <a href="https://example.com/post/8#shop" class="trackable" data-id="post-8-shop">Shop picks</a>
+                <span class="click-count" id="count-post-8"></span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 9 Nike shoes -->
+          <article class="article" data-id="9">
+            <div class="thumb"><a href="https://example.com/post/9" class="trackable" data-id="post-9-img"><img src="https://images.unsplash.com/photo-1519741494172-3a6a7dbd1d5d?q=80&w=900&auto=format&fit=crop" alt="Nike"></a></div>
+            <div class="meta">
+              <div class="kicker">Gear</div>
+              <a href="https://example.com/post/9" class="trackable" data-id="post-9-title"><div class="title">Nike: Best Shoes for Practice</div></a>
+              <div class="excerpt">A roundup of comfortable trainers suitable for travel and activity days.</div>
+              <div class="read">
+                <a href="https://example.com/post/9" class="trackable" data-id="post-9-read">Read more</a>
+                <a href="https://example.com/post/9#buy" class="trackable" data-id="post-9-buy">Where to buy</a>
+                <span class="click-count" id="count-post-9"></span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 10 Gaming -->
+          <article class="article" data-id="10">
+            <div class="thumb"><a href="https://example.com/post/10" class="trackable" data-id="post-10-img"><img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=900&auto=format&fit=crop" alt="Gaming"></a></div>
+            <div class="meta">
+              <div class="kicker">Gaming</div>
+              <a href="https://example.com/post/10" class="trackable" data-id="post-10-title"><div class="title">Top Game Picks: Community Favourites</div></a>
+              <div class="excerpt">A short list of popular games and why they spark creative meetups.</div>
+              <div class="read">
+                <a href="https://example.com/post/10" class="trackable" data-id="post-10-read">Read more</a>
+                <a href="https://example.com/post/10#list" class="trackable" data-id="post-10-list">Game list</a>
+                <span class="click-count" id="count-post-10"></span>
+              </div>
+            </div>
+          </article>
+
         </section>
       </main>
 
+      <!-- sidebar -->
       <aside class="sidebar">
         <div class="sticky">
           <div class="card">
@@ -122,6 +268,57 @@
         </div>
       </aside>
     </div>
+
   </div>
+
+  <!-- modal omitted (not needed for blog-only view) -->
+
+  <!-- sticky mobile ad -->
+  <div id="stickyAd" class="sticky-ad" style="display:none">
+    <div style="display:flex;gap:8px;align-items:center">
+      <img src="https://via.placeholder.com/80x40?text=Ad" alt="ad">
+      <div style="font-size:13px">Sponsored: Join our windsurf workshop</div>
+    </div>
+    <div style="display:flex;gap:8px"><a href="https://example.com/ad1" target="_blank" class="btn">Learn</a><button id="closeSticky" class="btn">✕</button></div>
+  </div>
+
+  <script>
+    // click-tracking demo (client-side)
+    // Each link with class .trackable will increment a local count and attempt to send a beacon to /track
+    const links = document.querySelectorAll('a.trackable');
+    links.forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        const id = a.dataset.id || a.href;
+        // increment UI counter for the related post if present
+        const match = id && id.match(/post-(\d+)/);
+        if(match){
+          const el = document.getElementById('count-' + 'post-' + match[1]);
+          // fallback to count-post-n
+          const counter = document.getElementById('count-post-' + match[1]);
+          if(counter){
+            const cur = parseInt(counter.dataset.count||'0',10) + 1;
+          }
+        }
+
+        // send a tracking beacon (best-effort). Replace URL with your tracking endpoint.
+        const payload = {id: id, href: a.href, time: new Date().toISOString(), userAgent: navigator.userAgent};
+        try{
+          if(navigator.sendBeacon){
+            navigator.sendBeacon('/track', JSON.stringify(payload));
+          } else {
+            fetch('/track', {method:'POST',body:JSON.stringify(payload),keepalive:true,headers:{'Content-Type':'application/json'}}).catch(()=>console.log('track failed'));
+          }
+        }catch(err){ console.log('tracking error', err); }
+
+        // allow link to proceed normally
+      });
+    });
+
+    // show sticky ad on mobile
+    const sticky = document.getElementById('stickyAd'); const closeSticky = document.getElementById('closeSticky');
+    function maybeShowSticky(){ if(window.innerWidth <= 640) sticky.style.display='flex'; }
+    maybeShowSticky(); window.addEventListener('resize', maybeShowSticky);
+    closeSticky && closeSticky.addEventListener('click', ()=>{ sticky.style.display='none'; });
+  </script>
 </body>
 </html>
