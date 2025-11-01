@@ -3,278 +3,361 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Suhardham — Instagram-style Grid with Links & Comments</title>
+  <title>Suhardham — News Grid (IndiaToday-style, mobile-first)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    :root{--bg:#ffffff;--muted:#64748b}
-    body{background:var(--bg);color:#0f172a;font-family:Inter,system-ui,Segoe UI,Roboto,-apple-system,"Helvetica Neue",Arial}
-    .container{max-width:980px;margin:0 auto;padding:1rem}
+    :root{--muted:#64748b;--accent1:#ff6b6b;--accent2:#ff9a9e}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,-apple-system,"Helvetica Neue",Arial;background:#fff;color:#0f172a}
+    .wrap{max-width:980px;margin:0 auto;padding:14px}
 
-    /* Grid styling (windsurf compact feel) */
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-    @media (min-width:1024px){.grid{grid-template-columns:repeat(4,1fr);gap:12px}}
-    @media (max-width:640px){.grid{grid-template-columns:repeat(3,1fr);gap:6px}}
+    /* top nav (compact, like news sites) */
+    .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+    .brand{display:flex;gap:12px;align-items:center}
+    .brand .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(90deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+    nav a{margin-left:12px;color:var(--muted);font-size:14px}
 
-    .tile{position:relative;border-radius:8px;overflow:hidden;background:#f8fafc}
-    .tile img{display:block;width:100%;height:100%;aspect-ratio:1/1;object-fit:cover}
+    /* layout: main + sidebar */
+    .grid-outer{display:grid;grid-template-columns:1fr 320px;gap:18px}
+    @media (max-width:980px){.grid-outer{grid-template-columns:1fr 300px}}
+    @media (max-width:900px){.grid-outer{grid-template-columns:1fr}}
 
-    /* overlay for like/comment counts */
-    .overlay{position:absolute;left:6px;top:6px;background:rgba(0,0,0,0.45);color:white;padding:.25rem .5rem;border-radius:999px;font-size:.85rem;display:flex;gap:.5rem;align-items:center}
-    .overlay .count{display:inline-flex;gap:.35rem;align-items:center}
+    /* hero row */
+    .hero{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:12px}
+    .hero .feature{border-radius:12px;overflow:hidden;box-shadow:0 10px 30px rgba(255,107,107,0.06)}
+    .feature img{width:100%;height:260px;object-fit:cover;display:block;filter:contrast(1.03) saturate(1.05)}
+    @media (max-width:640px){.feature img{height:200px}}
 
-    /* bottom caption area for grid (small) */
-    .tile-meta{position:absolute;left:0;right:0;bottom:0;padding:.5rem;background:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.42) 70%);color:white;font-size:.85rem;display:flex;justify-content:space-between;align-items:center}
+    /* articles list (newsy compact cards) */
+    .article{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #eef2f7}
+    .article:last-child{border-bottom:none}
+    .thumb{flex:0 0 180px;border-radius:8px;overflow:hidden}
+    .thumb img{width:180px;height:110px;object-fit:cover;display:block;transition:transform .35s ease}
+    .thumb img:hover{transform:scale(1.04)}
+    @media (max-width:640px){.thumb{flex:0 0 110px}.thumb img{width:110px;height:72px}}
 
-    /* Lightbox / modal with right-side comments like Instagram */
-    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,0.6);z-index:60;padding:18px}
-    .modal-inner{width:94%;max-width:1100px;height:86vh;background:#fff;border-radius:12px;display:grid;grid-template-columns:1fr 360px;overflow:hidden}
-    @media (max-width:920px){.modal-inner{grid-template-columns:1fr 320px}}
-    @media (max-width:700px){.modal-inner{grid-template-columns:1fr;height:92vh}}
+    .meta{flex:1}
+    .kicker{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+    .title{font-size:18px;font-weight:800;margin:6px 0;color:#0b1220}
+    .excerpt{color:#253044;margin:6px 0;font-size:14px}
+    .read{display:inline-flex;gap:8px;align-items:center;margin-top:8px}
+    .read a{color:var(--accent2);font-weight:700}
 
+    /* mobile image grid like indiaToday front */
+    .mobile-grid{display:none;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px}
+    .mobile-grid a{display:block;border-radius:8px;overflow:hidden;position:relative}
+    .mobile-grid img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:8px;display:block}
+    .mobile-grid .overlay{position:absolute;left:8px;bottom:8px;color:white;font-weight:700;text-shadow:0 2px 8px rgba(0,0,0,0.45)}
+    @media (max-width:640px){.mobile-grid{display:grid}.grid-outer{display:block}.sidebar{display:none}}
+
+    /* ads */
+    .ad{display:flex;align-items:center;justify-content:center;border-radius:8px;border:1px dashed #e6eef3;padding:10px;background:#fff;margin:10px 0}
+    .ad img{max-width:100%;height:auto;border-radius:6px}
+
+    /* sidebar */
+    .sidebar{position:relative}
+    .sticky{position:sticky;top:14px}
+    .card{border-radius:8px;padding:12px;background:#fff;border:1px solid #eef2f7;margin-bottom:12px}
+    .small-thumb{width:100%;height:120px;object-fit:cover;border-radius:8px}
+
+    /* modal for image + comments */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,0.6);z-index:90;padding:12px}
+    .modal-inner{width:96%;max-width:1100px;height:86vh;background:#fff;border-radius:12px;display:grid;grid-template-columns:1fr 360px;overflow:hidden}
+    @media (max-width:900px){.modal-inner{grid-template-columns:1fr 300px}}
     .modal-media{background:#000;display:flex;align-items:center;justify-content:center}
     .modal-media img{max-width:100%;max-height:100%;object-fit:contain}
-
     .modal-side{padding:12px 14px;display:flex;flex-direction:column;gap:8px;overflow:auto}
-    .modal-side .post-head{display:flex;gap:10px;align-items:center}
-    .modal-side .post-head img{width:44px;height:44px;border-radius:8px;object-fit:cover}
-    .modal-side .comments{margin-top:6px;flex:1;overflow:auto;padding-right:6px}
-    .modal-side .comment{padding:8px 6px;border-bottom:1px solid #f1f5f9}
-    .modal-side .cta{display:flex;gap:8px;align-items:center;margin-top:8px}
-    .btn{padding:.5rem .75rem;border-radius:8px;border:1px solid rgba(15,23,42,0.06);background:#fff}
-    .btn-primary{background:linear-gradient(90deg,#06b6d4,#0ea5a4);color:#fff;border:none}
+
+    /* sticky mobile CTA/ad */
+    .sticky-ad{position:fixed;left:12px;right:12px;bottom:12px;background:#fff;border-radius:10px;padding:8px;border:1px solid #e6eef3;display:flex;align-items:center;justify-content:space-between;gap:8px;z-index:95;box-shadow:0 14px 40px rgba(2,6,23,0.08)}
+
+    .muted{color:var(--muted)}
+    .btn{padding:8px 10px;border-radius:8px;border:1px solid #e6eef3;background:#fff}
+    .btn-primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff;border:none}
 
     /* small helpers */
-    .muted{color:var(--muted)}
-    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-    .logo{display:flex;gap:10px;align-items:center}
-    .logo svg{width:36px;height:36px}
-
+    .small{font-size:13px}
+    a{color:inherit;text-decoration:none}
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="topbar">
-      <div class="logo">
-        <div style="width:44px;height:44px;border-radius:10px;background:linear-gradient(90deg,#06b6d4,#0ea5a4);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(6,30,75,0.08)">
-          <!-- analytics icon -->
-          <svg viewBox="0 0 24 24" fill="none" style="width:20px;height:20px;color:white"><path d="M4 19V10" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 19V6" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 19V13" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 19V9" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <div class="logo">SD</div>
         <div>
           <div style="font-weight:700">Suhardham</div>
-          <div class="muted" style="font-size:13px">Youth meetup • windsurf gallery</div>
+          <div class="muted small">Community • Windsurf gallery</div>
         </div>
       </div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <a class="muted" href="#about">About</a>
-        <a class="muted" href="#events">Events</a>
-        <a class="muted" href="#contact">Contact</a>
-      </div>
+      <nav>
+        <a href="#">Home</a>
+        <a href="#">News</a>
+        <a href="#">Photos</a>
+        <a href="#">Events</a>
+        <a href="#">Contact</a>
+      </nav>
     </div>
 
-    <!-- Grid of posts -->
-    <section class="grid" id="grid">
-      <!-- tile structure: data attributes carry info for modal -->
+    <!-- mobile grid (3x) — 10 images total included below (topic-specific, CDN images) -->
+    <section class="mobile-grid" id="mobileGrid">
+      <!-- 1 Starbucks (coffee cup, warm tones) -->
+      <a href="#" class="tile" data-src="https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=1200&auto=format&fit=crop" data-index="0">
+        <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=600&auto=format&fit=crop" alt="starbucks">
+        <div class="overlay">Starbucks • Coffee</div>
+      </a>
 
-      <div class="tile" data-src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop" data-user="Priya Sharma" data-time="Nov 1, 2025" data-caption="Sunlit mountain at golden hour." data-link="https://example.com/post/1" data-likes="12" data-comments="3">
-        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=600&auto=format&fit=crop" alt="sunlit mountain">
-        <div class="overlay"><span class="count">❤ 12</span><span class="count">💬 3</span></div>
-        <div class="tile-meta"><div style="font-weight:600">Priya Sharma</div><div class="muted">Nov 1</div></div>
-      </div>
+      <!-- 2 Instagram (stylish phone shot) -->
+      <a href="#" class="tile" data-src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=1200&auto=format&fit=crop" data-index="1">
+        <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=600&auto=format&fit=crop" alt="instagram">
+        <div class="overlay">Instagram • Social</div>
+      </a>
 
-      <div class="tile" data-src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop" data-user="Ravi Patel" data-time="Oct 31, 2025" data-caption="Coastal practice session." data-link="https://example.com/post/2" data-likes="8" data-comments="2">
-        <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=600&auto=format&fit=crop" alt="coastal cliffs">
-        <div class="overlay"><span class="count">❤ 8</span><span class="count">💬 2</span></div>
-        <div class="tile-meta"><div style="font-weight:600">Ravi Patel</div><div class="muted">Oct 31</div></div>
-      </div>
+      <!-- 3 Car (sleek car closeup) -->
+      <a href="#" class="tile" data-src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1200&auto=format&fit=crop" data-index="2">
+        <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=600&auto=format&fit=crop" alt="car">
+        <div class="overlay">Auto • Drive</div>
+      </a>
 
-      <div class="tile" data-src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=1200&auto=format&fit=crop" data-user="Meera" data-time="Oct 30, 2025" data-caption="Forest walk." data-link="https://example.com/post/3" data-likes="20" data-comments="5">
-        <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=600&auto=format&fit=crop" alt="forest path">
-        <div class="overlay"><span class="count">❤ 20</span><span class="count">💬 5</span></div>
-        <div class="tile-meta"><div style="font-weight:600">Meera</div><div class="muted">Oct 30</div></div>
-      </div>
+      <!-- 4 YouTube Shorts (vertical phone video vibe) -->
+      <a href="#" class="tile" data-src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?q=80&w=1200&auto=format&fit=crop" data-index="3">
+        <img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?q=80&w=600&auto=format&fit=crop" alt="youtube shorts">
+        <div class="overlay">YouTube • Shorts</div>
+      </a>
 
-      <div class="tile" data-src="https://images.unsplash.com/photo-1491557345352-5929e343eb89?q=80&w=1200&auto=format&fit=crop" data-user="Arjun" data-time="Oct 29, 2025" data-caption="Dusk lights by the river." data-link="https://example.com/post/4" data-likes="34" data-comments="6">
-        <img src="https://images.unsplash.com/photo-1491557345352-5929e343eb89?q=80&w=600&auto=format&fit=crop" alt="city dusk">
-        <div class="overlay"><span class="count">❤ 34</span><span class="count">💬 6</span></div>
-        <div class="tile-meta"><div style="font-weight:600">Arjun</div><div class="muted">Oct 29</div></div>
-      </div>
+      <!-- 5 Influencer portrait (tasteful, non-identifying) -->
+      <a href="#" class="tile" data-src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1200&auto=format&fit=crop" data-index="4">
+        <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=600&auto=format&fit=crop" alt="influencer woman">
+        <div class="overlay">Creator • Portrait</div>
+      </a>
 
-      <div class="tile" data-src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop" data-user="Nisha" data-time="Oct 27, 2025" data-caption="Waves & practice." data-link="https://example.com/post/5" data-likes="41" data-comments="9">
-        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=600&auto=format&fit=crop" alt="golden wave">
-        <div class="overlay"><span class="count">❤ 41</span><span class="count">💬 9</span></div>
-        <div class="tile-meta"><div style="font-weight:600">Nisha</div><div class="muted">Oct 27</div></div>
-      </div>
+      <!-- 6 iPhone 16 Pro (tech closeup) -->
+      <a href="#" class="tile" data-src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1200&auto=format&fit=crop" data-index="5">
+        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=600&auto=format&fit=crop" alt="iphone">
+        <div class="overlay">iPhone • Tech</div>
+      </a>
 
-      <div class="tile" data-src="https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=1200&auto=format&fit=crop" data-user="Sana" data-time="Oct 26, 2025" data-caption="Cozy interior moment." data-link="https://example.com/post/6" data-likes="16" data-comments="1">
-        <img src="https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=600&auto=format&fit=crop" alt="cozy interior">
-        <div class="overlay"><span class="count">❤ 16</span><span class="count">💬 1</span></div>
-        <div class="tile-meta"><div style="font-weight:600">Sana</div><div class="muted">Oct 26</div></div>
-      </div>
+      <!-- 7 House (stylish interior) -->
+      <a href="#" class="tile" data-src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=1200&auto=format&fit=crop" data-index="6">
+        <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=600&auto=format&fit=crop" alt="house">
+        <div class="overlay">House • Home</div>
+      </a>
 
-      <div class="tile" data-src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1200&auto=format&fit=crop" data-user="Kavita" data-time="Oct 24, 2025" data-caption="Blooming color." data-link="https://example.com/post/7" data-likes="9" data-comments="4">
-        <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=600&auto=format&fit=crop" alt="bloom">
-        <div class="overlay"><span class="count">❤ 9</span><span class="count">💬 4</span></div>
-        <div class="tile-meta"><div style="font-weight:600">Kavita</div><div class="muted">Oct 24</div></div>
-      </div>
+      <!-- 8 COS fashion (minimalist outfit) -->
+      <a href="#" class="tile" data-src="https://images.unsplash.com/photo-1520974735194-8f2b8a0b1f4b?q=80&w=1200&auto=format&fit=crop" data-index="7">
+        <img src="https://images.unsplash.com/photo-1520974735194-8f2b8a0b1f4b?q=80&w=600&auto=format&fit=crop" alt="cos fashion">
+        <div class="overlay">COS • Minimal</div>
+      </a>
 
-      <div class="tile" data-src="https://images.unsplash.com/photo-1482192505345-5655af888cc4?q=80&w=1200&auto=format&fit=crop" data-user="Dev" data-time="Oct 22, 2025" data-caption="Architectural lines." data-link="https://example.com/post/8" data-likes="5" data-comments="0">
-        <img src="https://images.unsplash.com/photo-1482192505345-5655af888cc4?q=80&w=600&auto=format&fit=crop" alt="arches">
-        <div class="overlay"><span class="count">❤ 5</span><span class="count">💬 0</span></div>
-        <div class="tile-meta"><div style="font-weight:600">Dev</div><div class="muted">Oct 22</div></div>
-      </div>
+      <!-- 9 Nike shoes (sneakers closeup) -->
+      <a href="#" class="tile" data-src="https://images.unsplash.com/photo-1519741494172-3a6a7dbd1d5d?q=80&w=1200&auto=format&fit=crop" data-index="8">
+        <img src="https://images.unsplash.com/photo-1519741494172-3a6a7dbd1d5d?q=80&w=600&auto=format&fit=crop" alt="nike shoes">
+        <div class="overlay">Nike • Sneakers</div>
+      </a>
 
+      <!-- 10 Famous game icon (controller closeup) -->
+      <a href="#" class="tile" data-src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1200&auto=format&fit=crop" data-index="9">
+        <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop" alt="game icon">
+        <div class="overlay">Gaming • Icon</div>
+      </a>
     </section>
+
+    <div class="grid-outer">
+      <main>
+        <!-- hero feature (spans full width) -->
+        <div class="hero">
+          <a href="#" class="feature" data-src="https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=1200&auto=format&fit=crop" data-index="0">
+            <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=900&auto=format&fit=crop" alt="feature">
+            <div style="padding:12px;position:relative;bottom:0;background:linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.25));color:white;font-weight:700">Featured: Coffee moments</div>
+          </a>
+        </div>
+
+        <!-- top stories list (10 items total across page) -->
+        <section id="list">
+          <!-- 1 Starbucks -->
+          <article class="article" data-src="https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=1200&auto=format&fit=crop" data-title="Starbucks: Community Cups" data-link="https://example.com/post/1" data-likes="12" data-comments="3">
+            <div class="thumb"><img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=900&auto=format&fit=crop" alt="starbucks"></div>
+            <div class="meta">
+              <div class="kicker">Lifestyle</div>
+              <a href="https://example.com/post/1"><div class="title">Starbucks: Community Cups</div></a>
+              <div class="excerpt">Moments from our coffee meetups — cozy, social, and full of conversation. A visual round-up.</div>
+              <div class="read"><a href="https://example.com/post/1">Read more</a><span class="muted"> · Nov 1, 2025</span></div>
+            </div>
+          </article>
+
+          <!-- 2 Instagram -->
+          <article class="article" data-src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=1200&auto=format&fit=crop" data-title="Instagram Trends" data-link="https://example.com/post/2" data-likes="8" data-comments="2">
+            <div class="thumb"><img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=900&auto=format&fit=crop" alt="instagram"></div>
+            <div class="meta">
+              <div class="kicker">Social</div>
+              <a href="https://example.com/post/2"><div class="title">Instagram Trends: What’s Working</div></a>
+              <div class="excerpt">Quick analysis of rising content formats and how creators are using short video to grow.</div>
+              <div class="read"><a href="https://example.com/post/2">Read more</a><span class="muted"> · Oct 31, 2025</span></div>
+            </div>
+          </article>
+
+          <!-- 3 Car -->
+          <article class="article" data-src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1200&auto=format&fit=crop" data-title="Car Review" data-link="https://example.com/post/3" data-likes="20" data-comments="5">
+            <div class="thumb"><img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=900&auto=format&fit=crop" alt="car"></div>
+            <div class="meta">
+              <div class="kicker">Auto</div>
+              <a href="https://example.com/post/3"><div class="title">Car: Weekend Test Drive</div></a>
+              <div class="excerpt">Highlights from the test drive: performance, comfort, and practical impressions.</div>
+              <div class="read"><a href="https://example.com/post/3">Read more</a><span class="muted"> · Oct 30, 2025</span></div>
+            </div>
+          </article>
+
+          <!-- inline banner ad -->
+          <div class="ad"><a href="https://example.com/ad1" target="_blank" rel="noopener"><img src="https://via.placeholder.com/728x90?text=Top+Banner+Ad" alt="ad"></a></div>
+
+          <!-- 4 YouTube Shorts -->
+          <article class="article" data-src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?q=80&w=1200&auto=format&fit=crop" data-title="YouTube Shorts: Quick Cuts" data-link="https://example.com/post/4" data-likes="34" data-comments="6">
+            <div class="thumb"><img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?q=80&w=900&auto=format&fit=crop" alt="youtube shorts"></div>
+            <div class="meta">
+              <div class="kicker">Video</div>
+              <a href="https://example.com/post/4"><div class="title">YouTube Shorts: Quick Cuts That Work</div></a>
+              <div class="excerpt">How creators are repurposing long-form content into vertical shorts to boost reach.</div>
+              <div class="read"><a href="https://example.com/post/4">Read more</a><span class="muted"> · Oct 29, 2025</span></div>
+            </div>
+          </article>
+
+          <!-- 5 Influencer portrait (tasteful, non-identifying) -->
+          <article class="article" data-src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1200&auto=format&fit=crop" data-title="Creator Spotlight" data-link="https://example.com/post/5" data-likes="41" data-comments="9">
+            <div class="thumb"><img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=900&auto=format&fit=crop" alt="influencer woman"></div>
+            <div class="meta">
+              <div class="kicker">Feature</div>
+              <a href="https://example.com/post/5"><div class="title">Creator Spotlight: Rising Stars</div></a>
+              <div class="excerpt">A profile of creators making waves with authentic storytelling and aesthetics.</div>
+              <div class="read"><a href="https://example.com/post/5">Read more</a><span class="muted"> · Oct 27, 2025</span></div>
+            </div>
+          </article>
+
+          <!-- square ads row -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
+            <div class="ad"><a href="https://example.com/ad2" target="_blank"><img src="https://via.placeholder.com/300x300?text=Ad+Square+1" alt="ad"></a></div>
+            <div class="ad"><a href="https://example.com/ad3" target="_blank"><img src="https://via.placeholder.com/300x300?text=Ad+Square+2" alt="ad"></a></div>
+          </div>
+
+          <!-- 6 iPhone 16 Pro (tech closeup) -->
+          <article class="article" data-src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1200&auto=format&fit=crop" data-title="iPhone 16 Pro: First Look" data-link="https://example.com/post/6" data-likes="16" data-comments="1">
+            <div class="thumb"><img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=900&auto=format&fit=crop" alt="iphone"></div>
+            <div class="meta">
+              <div class="kicker">Tech</div>
+              <a href="https://example.com/post/6"><div class="title">iPhone 16 Pro: First Look</div></a>
+              <div class="excerpt">A quick hands-on look at the new iPhone — what’s changed and what feels familiar.</div>
+              <div class="read"><a href="https://example.com/post/6">Read more</a><span class="muted"> · Oct 26, 2025</span></div>
+            </div>
+          </article>
+
+          <!-- 7 House -->
+          <article class="article" data-src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=1200&auto=format&fit=crop" data-title="Home Stories" data-link="https://example.com/post/7" data-likes="9" data-comments="4">
+            <div class="thumb"><img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=900&auto=format&fit=crop" alt="house"></div>
+            <div class="meta">
+              <div class="kicker">Lifestyle</div>
+              <a href="https://example.com/post/7"><div class="title">House: Cozy Corners</div></a>
+              <div class="excerpt">Design ideas for small homes and community spaces used for meetups.</div>
+              <div class="read"><a href="https://example.com/post/7">Read more</a><span class="muted"> · Oct 24, 2025</span></div>
+            </div>
+          </article>
+
+          <!-- 8 COS fashion (minimalist outfit) -->
+          <article class="article" data-src="https://images.unsplash.com/photo-1520974735194-8f2b8a0b1f4b?q=80&w=1200&auto=format&fit=crop" data-title="COS: Minimal Looks" data-link="https://example.com/post/8" data-likes="5" data-comments="0">
+            <div class="thumb"><img src="https://images.unsplash.com/photo-1520974735194-8f2b8a0b1f4b?q=80&w=900&auto=format&fit=crop" alt="cos fashion"></div>
+            <div class="meta">
+              <div class="kicker">Style</div>
+              <a href="https://example.com/post/8"><div class="title">COS: Minimal Looks for Events</div></a>
+              <div class="excerpt">How minimal fashion staples can become practical event uniforms for community gatherings.</div>
+              <div class="read"><a href="https://example.com/post/8">Read more</a><span class="muted"> · Oct 22, 2025</span></div>
+            </div>
+          </article>
+
+          <!-- 9 Nike shoes -->
+          <article class="article" data-src="https://images.unsplash.com/photo-1519741494172-3a6a7dbd1d5d?q=80&w=1200&auto=format&fit=crop" data-title="Nike: Kicks Review" data-link="https://example.com/post/9" data-likes="11" data-comments="2">
+            <div class="thumb"><img src="https://images.unsplash.com/photo-1519741494172-3a6a7dbd1d5d?q=80&w=900&auto=format&fit=crop" alt="nike shoes"></div>
+            <div class="meta">
+              <div class="kicker">Gear</div>
+              <a href="https://example.com/post/9"><div class="title">Nike: Best Shoes for Practice</div></a>
+              <div class="excerpt">A roundup of comfortable trainers suitable for travel and activity days.</div>
+              <div class="read"><a href="https://example.com/post/9">Read more</a><span class="muted"> · Oct 20, 2025</span></div>
+            </div>
+          </article>
+
+          <!-- 10 Famous game icon (gaming) -->
+          <article class="article" data-src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1200&auto=format&fit=crop" data-title="Top Game Picks" data-link="https://example.com/post/10" data-likes="7" data-comments="1">
+            <div class="thumb"><img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=900&auto=format&fit=crop" alt="game"></div>
+            <div class="meta">
+              <div class="kicker">Gaming</div>
+              <a href="https://example.com/post/10"><div class="title">Top Game Picks: Community Favourites</div></a>
+              <div class="excerpt">A short list of popular games and why they spark creative meetups.</div>
+              <div class="read"><a href="https://example.com/post/10">Read more</a><span class="muted"> · Oct 18, 2025</span></div>
+            </div>
+          </article>
+
+        </section>
+      </main>
+
+      <!-- sidebar -->
+      <aside class="sidebar">
+        <div class="sticky">
+          <div class="card">
+            <h4 style="margin:0 0 8px 0">Featured Photo</h4>
+            <img class="small-thumb" src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=900&auto=format&fit=crop" alt="featured">
+            <p class="muted" style="margin-top:8px">Spotlight on creators and visuals that inspire.</p>
+          </div>
+
+          <div class="card">
+            <h4 style="margin:0 0 8px 0">Popular</h4>
+            <ul style="padding-left:14px;margin:0">
+              <li><a href="#">Top 10 windsurf tips</a></li>
+              <li><a href="#">How to rig your sail</a></li>
+              <li><a href="#">Safety checklist</a></li>
+            </ul>
+          </div>
+
+          <div class="card ad">
+            <div style="text-align:center">
+              <div class="muted small" style="font-size:12px;margin-bottom:8px">Sponsored</div>
+              <a href="https://example.com/sponsor" target="_blank"><img src="https://via.placeholder.com/300x200?text=Sidebar+Ad" alt="sidebar ad"></a>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
   </div>
 
-  <!-- Modal / lightbox with comments and link like Instagram -->
-  <div id="modal" class="modal" aria-hidden="true" role="dialog">
-    <div class="modal-inner" role="document">
-      <div class="modal-media">
-        <img id="modalImg" src="" alt="">
-      </div>
+  <!-- modal for image + comments + link -->
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal-inner">
+      <div class="modal-media"><img id="modalImg" src="" alt=""></div>
       <aside class="modal-side">
         <div style="display:flex;justify-content:space-between;align-items:center">
-          <div class="post-head"><img id="modalAvatar" src="https://images.unsplash.com/photo-1491557345352-5929e343eb89?q=80&w=200&auto=format&fit=crop" alt="avatar"><div><div id="modalUser" style="font-weight:700">User</div><div class="muted" id="modalTime">Date</div></div></div>
-          <button id="modalClose" class="btn">✕</button>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:44px;height:44px;border-radius:8px;background:#f1f5f9"></div>
+            <div>
+              <div id="mUser" style="font-weight:700">User</div>
+              <div id="mTime" class="muted" style="font-size:13px">Date</div>
+            </div>
+          </div>
+          <button id="mClose" class="btn">✕</button>
         </div>
 
-        <div class="comments" id="modalComments">
-          <!-- comments will be injected here -->
+        <div id="mComments" class="comments" style="margin-top:8px;flex:1;overflow:auto;padding-right:6px"></div>
+        <div id="mCaption" class="muted" style="font-size:14px"></div>
+        <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
+          <button id="mLike" class="btn">❤ <span id="mLikeCount" style="margin-left:6px"></span></button>
+          <a id="mLink" class="btn btn-primary" href="#" target="_blank">Open link</a>
         </div>
-
-        <div>
-          <div id="modalCaption" class="muted" style="font-size:14px"></div>
-        </div>
-
-        <div class="cta">
-          <button id="likeBtn" class="btn">❤ <span id="likeCount" style="margin-left:6px"></span></button>
-          <a id="postLink" class="btn btn-primary" href="#" target="_blank" rel="noopener">Open link</a>
-        </div>
-
-        <div style="margin-top:10px">
-          <input id="newComment" placeholder="Add a comment…" style="width:100%;padding:.6rem;border-radius:8px;border:1px solid #eef2f7" />
-        </div>
+        <div style="margin-top:8px"><input id="mNew" placeholder="Add a comment…" style="width:100%;padding:.6rem;border-radius:8px;border:1px solid #eef2f7" /></div>
       </aside>
     </div>
   </div>
 
-  <script>
-    // Simple client-only behaviour to mimic Instagram grid + comments + link
-    const tiles = Array.from(document.querySelectorAll('.tile'));
-    const modal = document.getElementById('modal');
-    const modalImg = document.getElementById('modalImg');
-    const modalUser = document.getElementById('modalUser');
-    const modalTime = document.getElementById('modalTime');
-    const modalComments = document.getElementById('modalComments');
-    const modalCaption = document.getElementById('modalCaption');
-    const postLink = document.getElementById('postLink');
-    const likeCount = document.getElementById('likeCount');
-    const likeBtn = document.getElementById('likeBtn');
-    const newComment = document.getElementById('newComment');
-    const modalClose = document.getElementById('modalClose');
+  <!-- sticky mobile ad -->
+  <div id="stickyAd" class="sticky-ad" style="display:none">
+    <div style="display:flex;gap:8px;align-items:center">
+      <img src="https://via.placeholder.com/80x40?text=Ad" alt="ad">
+      <div style="font-size:13px">Sponsored: Join our windsurf workshop</div>
+    </div>
 
-    // Simple sample comments store (in-memory)
-    const commentsStore = {
-      0: [
-        {user:'Ashok',text:'Amazing shot!'},
-        {user:'Leela',text:'Love the colors.'},
-        {user:'Priya',text:'Thanks everyone!'}
-      ],
-      1: [ {user:'Sana',text:'Wish I was there!'} ],
-      2: [ {user:'Ajay',text:'Beautiful!'} ],
-      3: [ {user:'Kavita',text:'Stunning!'} ],
-      4: [ {user:'Manoj',text:'Incredible timing.'} ],
-      5: [ {user:'Rohit',text:'Nice vibes'} ],
-      6: [ {user:'Anita',text:'So pretty'} ],
-      7: []
-    };
-
-    // open modal with tile data
-    tiles.forEach((tile, i) => {
-      tile.addEventListener('click', () => {
-        const src = tile.getAttribute('data-src');
-        const user = tile.getAttribute('data-user');
-        const time = tile.getAttribute('data-time');
-        const caption = tile.getAttribute('data-caption');
-        const link = tile.getAttribute('data-link');
-        const likes = tile.getAttribute('data-likes');
-
-        modalImg.src = src.replace(/w=1200/, 'w=2000');
-        modalUser.textContent = user;
-        modalTime.textContent = time;
-        modalCaption.textContent = caption;
-        postLink.href = link;
-        likeCount.textContent = likes;
-
-        // render comments for this tile (use index i)
-        renderComments(i);
-
-        modal.style.display = 'flex';
-        modal.setAttribute('aria-hidden','false');
-        document.body.style.overflow = 'hidden';
-
-        // store current index on modal for adding comments/likes
-        modal.dataset.current = i;
-      });
-    });
-
-    function renderComments(index){
-      modalComments.innerHTML = '';
-      const cs = commentsStore[index] || [];
-      if(cs.length === 0){
-        modalComments.innerHTML = '<div class="muted">No comments yet</div>';
-        return;
-      }
-      cs.forEach(c => {
-        const div = document.createElement('div'); div.className = 'comment';
-        div.innerHTML = `<strong>${escapeHtml(c.user)}</strong>: ${escapeHtml(c.text)}`;
-        modalComments.appendChild(div);
-      });
-    }
-
-    // add new comment locally
-    newComment.addEventListener('keydown', (e) => {
-      if(e.key === 'Enter'){
-        const txt = newComment.value.trim();
-        if(!txt) return;
-        const idx = parseInt(modal.dataset.current,10);
-        commentsStore[idx] = commentsStore[idx] || [];
-        commentsStore[idx].push({user:'You',text:txt});
-        newComment.value = '';
-        renderComments(idx);
-
-        // update overlay comment count on tile
-        const tile = tiles[idx];
-        const prev = parseInt(tile.getAttribute('data-comments')||'0',10);
-        const updated = prev + 1;
-        tile.setAttribute('data-comments', updated);
-        // update overlay text
-        const overlayCounts = tile.querySelectorAll('.overlay .count');
-        if(overlayCounts[1]) overlayCounts[1].textContent = '💬 ' + updated;
-      }
-    });
-
-    // like button increments local counter
-    likeBtn.addEventListener('click', ()=>{
-      const idx = parseInt(modal.dataset.current,10);
-      const tile = tiles[idx];
-      const prev = parseInt(tile.getAttribute('data-likes')||'0',10);
-      const updated = prev + 1;
-      tile.setAttribute('data-likes', updated);
-      likeCount.textContent = updated;
-      const overlayCounts = tile.querySelectorAll('.overlay .count');
-      if(overlayCounts[0]) overlayCounts[0].textContent = '❤ ' + updated;
-    });
-
-    // close modal
-    modalClose.addEventListener('click', closeModal);
-    modal.addEventListener('click', (e)=>{ if(e.target === modal) closeModal(); });
-    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeModal(); });
-    function closeModal(){ modal.style.display = 'none'; modal.setAttribute('aria-hidden','true'); modalImg.src=''; document.body.style.overflow=''; }
-
-    // basic XSS escape for user content
-    function escapeHtml(str){ return String(str).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;'); }
-
-  </script>
-</body>
-</html>
+  
