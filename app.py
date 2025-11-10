@@ -24,7 +24,32 @@ def heatmap():
 @app.route("/read")
 def read():
     return render_template("read.html")
+@app.route("/read2")
+def read2():
+    return render_template("read2.html")
 
+@app.route("/read3")
+def read3():
+    return render_template("read3.html")
+@app.route("/read4")
+def read4():
+    return render_template("read4.html")
+
+@app.route("/read5")
+def read5():
+    return render_template("read5.html")
+
+@app.route("/read6")
+def read6():
+    return render_template("read6.html")
+
+@app.route("/read7")
+def read7():
+    return render_template("read7.html")
+
+@app.route("/read8")
+def read8():
+    return render_template("read8.html")
 @app.route("/api/click", methods=["POST"])
 def save_click():
     data = request.get_json()
