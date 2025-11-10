@@ -50,6 +50,14 @@ def read7():
 @app.route("/read8")
 def read8():
     return render_template("read8.html")
+
+@app.route("/read9")   
+def read9():
+    return render_template("read9.html")
+
+@app.route("/read10")   
+def read10():
+    return render_template("read10.html")
 @app.route("/api/click", methods=["POST"])
 def save_click():
     data = request.get_json()
