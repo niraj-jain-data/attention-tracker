@@ -1,37 +1,93 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Heatmap View</title>
-  <script src="https://unpkg.com/heatmap.js@2.0.5/build/heatmap.min.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Windsurf — Fullscreen Background</title>
   <style>
-    body { margin: 0; }
-    #heatmapContainer { width: 100vw; height: 100vh; }
+    /* Make the image cover the entire viewport */
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    .bg {
+      position: fixed;
+      inset: 0; /* top:0; right:0; bottom:0; left:0 */
+      background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20250205/pngtree-soft-pastel-floral-design-light-blue-background-image_16896113.jpg'); /* change path if needed */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      z-index: -1;
+      filter: saturate(1.02) contrast(1.02);
+    }
+
+    /* Optional semi-transparent overlay for better text contrast */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.35));
+      z-index: 0;
+    }
+
+    .content {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      color: white;
+      z-index: 1;
+    }
+
+    h1 {
+      margin: 0 0 0.5rem 0;
+      font-size: clamp(2.2rem, 6vw, 6rem);
+      letter-spacing: 0.02em;
+      text-shadow: 0 6px 20px rgba(0,0,0,0.6);
+      line-height: 1;
+    }
+
+    p.lead {
+      margin: 0;
+      font-size: clamp(1rem, 2.2vw, 1.35rem);
+      opacity: 0.95;
+      text-shadow: 0 3px 12px rgba(0,0,0,0.45);
+    }
+
+    /* Small hint to change the background when viewing locally */
+    .note {
+      position: fixed;
+      left: 1rem;
+      bottom: 1rem;
+      background: rgba(0,0,0,0.45);
+      color: #fff;
+      padding: 0.35rem 0.6rem;
+      border-radius: 6px; 
+      font-size: 0.85rem;
+      z-index: 2;
+      backdrop-filter: blur(4px);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      h1 { transform: translateY(-6px); animation: float 6s ease-in-out infinite; }
+      @keyframes float { 0%,100% { transform: translateY(-6px);} 50% { transform: translateY(6px);} }
+    }
   </style>
 </head>
 <body>
-  <div id="heatmapContainer"></div>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="overlay" aria-hidden="true"></div>
 
-  <script>
-    const heatmapInstance = h337.create({
-      container: document.getElementById("heatmapContainer"),
-      radius: 40
-    });
+  <main class="content">
+    <div>
+      <h1>Windsurf</h1>
+      <p class="lead">Full-screen background image — replace <code>/mnt/data/Heatmap.jpeg</code> if needed.</p>
+    </div>
+  </main>
 
-    function loadHeatmap() {
-      fetch("/api/clicks")
-        .then(res => res.json())
-        .then(data => {
-          heatmapInstance.setData({
-            max: 10,
-            data: data.map(p => ({ x: p.x, y: p.y, value: 1 }))
-          });
-        });
-    }
-
-    // auto-refresh every 5 seconds
-    loadHeatmap();
-    setInterval(loadHeatmap, 5000);
-  </script>
+  <div class="note">If you don't see the image, update the <code>background-image</code> path in the HTML to the correct file location.</div>
 </body>
 </html>
